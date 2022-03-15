@@ -6,6 +6,7 @@ from torch.utils.data import DataLoader
 import torch
 import random
 from cv2 import equalizeHist
+import torchvision.transforms as transforms
 torch.cuda.manual_seed(0)
 torch.backends.cudnn.benchmark=False
 torch.backends.cudnn.deterministic=True
