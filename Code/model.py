@@ -9,7 +9,7 @@ import utils
 import torch
 class CXR_Model(object):
 
-    def __init__(self,model_type='small', learning_rate=.1, dropout=.3,train_loader=None,
+    def __init__(self,model_type='small', learning_rate=.01, dropout=.3,train_loader=None,
         valid_loader=None,test_loader=None):
         self.model_type=model_type
         self.p=dropout
