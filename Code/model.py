@@ -46,7 +46,7 @@ class CXR_Model(object):
                     )
         self.model=model
         return
-    def train(self,epochs=20,learning_rate=.01):
+    def train(self,epochs=10,learning_rate=.01):
 
         device=self.device
         self.model.to(device)
