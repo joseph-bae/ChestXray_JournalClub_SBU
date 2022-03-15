@@ -4,6 +4,17 @@ import os
 import pandas as pd
 from torch.utils.data import DataLoader
 import torch
+class color:
+   PURPLE = '\033[95m'
+   CYAN = '\033[96m'
+   DARKCYAN = '\033[36m'
+   BLUE = '\033[94m'
+   GREEN = '\033[92m'
+   YELLOW = '\033[93m'
+   RED = '\033[91m'
+   BOLD = '\033[1m'
+   UNDERLINE = '\033[4m'
+   END = '\033[0m'
 class CXR_DataLoader(object):
   def __init__(self,data_path=None, label_sheet_path=None,dataloadertype='train_valid'):
     self.data_path=data_path
