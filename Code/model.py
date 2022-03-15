@@ -32,7 +32,7 @@ class CXR_Model(object):
         self.latest_labels=None
         self.latest_predictions=None
         self.latest_images=None
-
+        self.latest_names=None
     def create_model(self):
         if self.model_type=='small':
             model=models.resnet18(pretrained=True)
@@ -124,6 +124,7 @@ class CXR_Model(object):
             self.latest_labels=label
             self.latest_predictions=output
             self.latest_images=images
+            self.latest_names=names
             valid_sensitivity=valid_epoch_correct1/(valid_count/2)
             valid_specificity=valid_epoch_correct0/(valid_count/2)
             valid_accuracy=valid_epoch_correct/valid_count
@@ -152,6 +153,7 @@ class CXR_Model(object):
         self.latest_labels=label
         self.latest_predictions=output
         self.latest_images=images
+        self.latest_names=names
         test_accuracy=test_epoch_correct/test_count
         test_total_loss=test_epoch_loss/test_count
         print("test_accuracy:",test_accuracy)
