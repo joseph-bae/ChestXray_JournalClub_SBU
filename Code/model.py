@@ -37,14 +37,14 @@ class CXR_Model(object):
             model=models.resnet34(pretrained=True)
             model.fc=torch.nn.Sequential(
                 torch.nn.Dropout(p=self.p),
-                torch.nn.Linear(1000,2),
+                torch.nn.Linear(512,2),
                 torch.nn.Softmax(dim=1)
                     )
         if self.model_type=='large':
             model=models.resnet50(pretrained=True)
             model.fc=torch.nn.Sequential(
                 torch.nn.Dropout(p=self.p),
-                torch.nn.Linear(1000,2),
+                torch.nn.Linear(2048,2),
                 torch.nn.Softmax(dim=1)
                     )
         self.model=model
