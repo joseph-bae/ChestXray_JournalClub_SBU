@@ -30,12 +30,12 @@ class CXR_DataLoader(object):
       current_array=np.asarray(current_image.convert('L'))
       if self.dataloadertype=='train_valid':
         current_label=self.label_sheet.loc[self.label_sheet['FileName']==image_name,'Pathology'].iloc[0]
-      elif self.dataloadertype=='SBU':
+      elif self.dataloadertype=='covid':
         current_label=True
-      elif self.dataloadertype=='Normal':
+      elif self.dataloadertype=='normal':
         current_label=False
       else:
-        raise ValueError('Invalid dataloader type. Choose train_valid, SBU, or normal')
+        raise ValueError('Invalid dataloader type. Choose train_valid, covid, or normal')
       self.data_list.append((image_name,current_array,current_label))
     np.random.shuffle(self.data_list)
   def __getitem__(self,idx):
