@@ -83,7 +83,7 @@ class CXR_Model(object):
             accuracy=epoch_correct/train_count
             total_loss=epoch_loss/train_count 
             print("epoch:",epoch+1)
-            print(("---------------TRAIN---------------\n"+"train_sensitvity: %.4f, train_specificity: %.4f," + utils.color.YELLOW+utils.color.BOLD+"train_accuracy: %.4f"+utils.color.END) %(sensitivity,specificity,accuracy))
+            print(("---------------TRAIN---------------\n"+"train_sensitvity: %.4f, train_specificity: %.4f, " + utils.color.YELLOW+utils.color.BOLD+"train_accuracy: %.4f"+utils.color.END) %(sensitivity,specificity,accuracy))
             
 
             valid_count=0
@@ -118,7 +118,7 @@ class CXR_Model(object):
             valid_specificity=valid_epoch_correct0/(valid_count/2)
             valid_accuracy=valid_epoch_correct/valid_count
             valid_total_loss=valid_epoch_loss/valid_count
-            print(("---------------VALID---------------\n"+"valid_sensitvity: %.4f, valid_specificity: %.4f,"+utils.color.YELLOW+utils.color.BOLD+"valid_accuracy: %.4f"+utils.color.END+'\n') %(valid_sensitivity,valid_specificity,valid_accuracy))
+            print(("---------------VALID---------------\n"+"valid_sensitvity: %.4f, valid_specificity: %.4f, "+utils.color.YELLOW+utils.color.BOLD+"valid_accuracy: %.4f"+utils.color.END+'\n') %(valid_sensitivity,valid_specificity,valid_accuracy))
     def test(self):
         test_count=0
         test_epoch_loss=0

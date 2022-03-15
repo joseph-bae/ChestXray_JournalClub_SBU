@@ -18,7 +18,8 @@ class color:
 class CXR_DataLoader(object):
   def __init__(self,data_path=None, label_sheet_path=None,dataloadertype='train_valid'):
     self.data_path=data_path
-    self.label_sheet=pd.read_csv(label_sheet_path)
+    if label_sheet_path != None:
+        self.label_sheet=pd.read_csv(label_sheet_path)
     self.data_list=[]
     self.dataloadertype=dataloadertype
     self.generate_data_list()
