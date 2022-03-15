@@ -49,7 +49,7 @@ class CXR_Model(object):
     def train(self,epochs=20,learning_rate=.01):
 
         device=self.device
-        model=self.model.to(device)
+        self.model.to(device)
         criterion = torch.nn.CrossEntropyLoss().to(device)
         optimizer = optim.SGD(model.parameters(),lr=learning_rate)
         for epoch in range(epochs):
@@ -57,12 +57,12 @@ class CXR_Model(object):
             epoch_loss=0
             epoch_correct=0
             for batch in self.train_loader:
-                model.train()
+                self.model.train()
                 optimizer.zero_grad()
                 names,images,label=batch
                 images=images.to(device)
                 label=label.to(device)
-                output=model(images)
+                output=self.model(images)
                 loss=criterion(output,label)
                 loss.backward()
                 optimizer.step()
@@ -81,14 +81,14 @@ class CXR_Model(object):
             valid_epoch_correct=0
             
             for vbatch in self.valid_loader:
-                model.eval()
+                self.model.eval()
                 optimizer.zero_grad()
                 with torch.no_grad():
 
                     names,images,label=vbatch
                     images=images.to(device)
                     label=label.to(device)
-                    output=model(images)
+                    output=self.model(images)
                     loss=criterion(output,label)
                     valid_epoch_loss+=loss.item()*images.shape[0]
                     valid_count+=images.shape[0]
@@ -106,7 +106,7 @@ class CXR_Model(object):
         test_epoch_correct=0
         device=self.device
         for batch in self.test_loader:
-            model.eval()
+            self.model.eval()
             optimizer.zero_grad()
             with torch.no_grad():
             
@@ -114,9 +114,8 @@ class CXR_Model(object):
 
                 images=images.to(device)
                 label=label.to(device)
-                output=model(images)
+                output=self.model(images)
                 loss=criterion(output,label)
-                optimizer.step()
                 test_epoch_loss+=loss.item()*images.shape[0]
                 test_count+=images.shape[0]
                 correct = np.where(np.argmax(output.cpu().detach().numpy(), axis=1)==label.cpu().detach().numpy())[0].shape[0]
