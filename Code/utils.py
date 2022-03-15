@@ -3,6 +3,7 @@ import PIL
 import os
 import pandas as pd
 from torch.utils.data import DataLoader
+import torch
 class CXR_DataLoader(object):
   def __init__(self,data_path=None, label_sheet_path=None,dataloadertype='train_valid'):
     self.data_path=data_path
