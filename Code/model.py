@@ -7,8 +7,11 @@ from torchvision import models
 from torch import optim
 import utils
 import torch
+import random
+random.seed(0)
 torch.manual_seed(0)
 np.random.seed(0)
+torch.use_deterministic_algorithms(True)
 
 class CXR_Model(object):
 

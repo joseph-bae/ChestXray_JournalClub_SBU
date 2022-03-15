@@ -4,8 +4,11 @@ import os
 import pandas as pd
 from torch.utils.data import DataLoader
 import torch
+import random
+random.seed(0)
 torch.manual_seed(0)
 np.random.seed(0)
+
 class color:
    PURPLE = '\033[95m'
    CYAN = '\033[96m'
