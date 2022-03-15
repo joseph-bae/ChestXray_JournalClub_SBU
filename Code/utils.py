@@ -34,8 +34,8 @@ class CXR_DataLoader(object):
   def __len__(self):
     return len(self.data_list)
 def MakeDataLoader(data_path,label_sheet_path,batch_size=128,dataloadertype='train_valid'):
-  intermediateLoader=CXRDataLoader(data_path,label_sheet_path,dataloadertype=dataloadertype)
-  if dataloadertype='train_valid':
+  intermediateLoader=CXR_DataLoader(data_path,label_sheet_path,dataloadertype=dataloadertype)
+  if dataloadertype=='train_valid':
     shuffle=True
   else:
     shuffle=False
