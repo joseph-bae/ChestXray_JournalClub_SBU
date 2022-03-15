@@ -73,7 +73,7 @@ class CXR_Model(object):
                 correct = np.where(np.argmax(output.cpu().detach().numpy(), axis=1)==label.cpu().detach().numpy())[0].shape[0]
                 negatives = np.where(label.cpu().detach().numpy()==0)[0]
                 correct0 = np.where(np.argmax(output.cpu().detach().numpy()[negatives],axis=1)==0)[0].shape[0]
-                positives = np.where(label.cpu().detach().numpy()==0)[0]
+                positives = np.where(label.cpu().detach().numpy()==1)[0]
                 correct1 = np.where(np.argmax(output.cpu().detach().numpy()[positives],axis=1)==1)[0].shape[0]
                 epoch_correct0+=correct0
                 epoch_correct1+=correct1
@@ -83,7 +83,8 @@ class CXR_Model(object):
             accuracy=epoch_correct/train_count
             total_loss=epoch_loss/train_count 
             print("epoch:",epoch+1)
-            print("---------------TRAIN---------------\n","train_sensitvity",sensitivity,"train_specificity",specificity, utils.color.BOLD+"train_accuracy:",accuracy,utils.color.END,)
+            print("---------------TRAIN---------------\n","train_sensitvity: %.4f, train_specificity: %.4f,"+ 
+                utils.color.YELLOW+utils.color.BOLD+"train_accuracy: %.4f"+utils.color.END %(sensitivity,specificity,accuracy))
             
 
             valid_count=0
@@ -106,7 +107,7 @@ class CXR_Model(object):
                     correct = np.where(np.argmax(output.cpu().detach().numpy(), axis=1)==label.cpu().detach().numpy())[0].shape[0]
                     negatives = np.where(label.cpu().detach().numpy()==0)[0]
                     correct0 = np.where(np.argmax(output.cpu().detach().numpy()[negatives],axis=1)==0)[0].shape[0]
-                    positives = np.where(label.cpu().detach().numpy()==0)[0]
+                    positives = np.where(label.cpu().detach().numpy()==1)[0]
                     correct1 = np.where(np.argmax(output.cpu().detach().numpy()[positives],axis=1)==1)[0].shape[0]                    
                     valid_epoch_correct0+=correct0
                     valid_epoch_correct1+=correct1
@@ -114,11 +115,12 @@ class CXR_Model(object):
             self.latest_labels=label
             self.latest_predictions=output
             self.latest_images=images
-            sensitivity=valid_epoch_correct1/(valid_count/2)
-            specificity=valid_epoch_correct0/(valid_count/2)
+            valid_sensitivity=valid_epoch_correct1/(valid_count/2)
+            valid_specificity=valid_epoch_correct0/(valid_count/2)
             valid_accuracy=valid_epoch_correct/valid_count
             valid_total_loss=valid_epoch_loss/valid_count
-            print("---------------VALID---------------\n","valid_sensitvity",sensitivity,"valid_specificity",specificity,utils.color.BOLD+"valid_accuracy:",valid_accuracy,utils.color.END,'\n')
+            print("---------------VALID---------------\n","valid_sensitvity: %.4f, valid_specificity: %.4f,"
+                +utils.color.YELLOW+utils.color.BOLD+"valid_accuracy: %.4f"+utils.color.END,'\n' %(valid_sensitivity,valid_specificity,valid_accuracy))
     def test(self):
         test_count=0
         test_epoch_loss=0
@@ -144,4 +146,4 @@ class CXR_Model(object):
         self.latest_images=images
         test_accuracy=test_epoch_correct/test_count
         test_total_loss=test_epoch_loss/test_count
-        print("test_loss:",test_total_loss, "test_accuracy:",test_accuracy)
+        print("test_accuracy:",test_accuracy)
