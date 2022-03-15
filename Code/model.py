@@ -130,7 +130,7 @@ class CXR_Model(object):
             valid_specificity=valid_epoch_correct0/(valid_count/2)
             valid_accuracy=valid_epoch_correct/valid_count
             valid_total_loss=valid_epoch_loss/valid_count
-            loss_list_validation.append(valid_total)
+            loss_list_validation.append(valid_total_loss)
             self.validation_list=loss_list_validation
             print(("---------------VALID---------------\n"+"valid_loss: %.8f \n"+"valid_sensitvity: %.4f, valid_specificity: %.4f, "+utils.color.RED+utils.color.BOLD+"valid_accuracy: %.4f"+utils.color.END+'\n') %(valid_total_loss,valid_sensitivity,valid_specificity,valid_accuracy))
     def test(self):
