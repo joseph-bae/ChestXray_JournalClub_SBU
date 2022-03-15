@@ -8,7 +8,9 @@ from torch import optim
 import utils
 import torch
 import random
-
+torch.cuda.manual_seed(0)
+torch.backends.cudnn.benchmark=False
+torch.backends.cudnn.deterministic=True
 
 class CXR_Model(object):
     torch.cuda.empty_cache()
