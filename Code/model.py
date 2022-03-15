@@ -9,12 +9,15 @@ import utils
 import torch
 class CXR_Model(object):
 
-    def __init__(self,model_type='small',dropout=.3 ,train_loader=None,
+    def __init__(self,model_type='small', learning_rate=.1, dropout=.3,train_loader=None,
         valid_loader=None,test_loader=None):
         self.model_type=model_type
         self.p=dropout
+        self.lr=learning_rate
         self.device=torch.device("cuda:0")
         self.create_model()
+        self.criterion = torch.nn.CrossEntropyLoss().to(device)
+        self.optimizer = optim.SGD(self.model.parameters(),lr=self.lr)
         self.train_loader=train_loader
         self.valid_loader=valid_loader
         self.test_loader=test_loader
@@ -46,12 +49,11 @@ class CXR_Model(object):
                     )
         self.model=model
         return
-    def train(self,epochs=10,learning_rate=.01):
+    def train(self,epochs=10):
 
         device=self.device
         self.model.to(device)
-        criterion = torch.nn.CrossEntropyLoss().to(device)
-        optimizer = optim.SGD(self.model.parameters(),lr=learning_rate)
+
         for epoch in range(epochs):
             train_count=0
             epoch_loss=0
@@ -60,14 +62,14 @@ class CXR_Model(object):
             epoch_correct1=0
             for batch in self.train_loader:
                 self.model.train()
-                optimizer.zero_grad()
+                self.optimizer.zero_grad()
                 names,images,label=batch
                 images=images.to(device)
                 label=label.to(device)
                 output=self.model(images)
-                loss=criterion(output,label)
+                loss=self.criterion(output,label)
                 loss.backward()
-                optimizer.step()
+                self.optimizer.step()
                 epoch_loss+=loss.item()*images.shape[0]
                 train_count+=images.shape[0]
                 correct = np.where(np.argmax(output.cpu().detach().numpy(), axis=1)==label.cpu().detach().numpy())[0].shape[0]
@@ -93,14 +95,14 @@ class CXR_Model(object):
             valid_epoch_correct1=0            
             for vbatch in self.valid_loader:
                 self.model.eval()
-                optimizer.zero_grad()
+                self.optimizer.zero_grad()
                 with torch.no_grad():
 
                     names,images,label=vbatch
                     images=images.to(device)
                     label=label.to(device)
                     output=self.model(images)
-                    loss=criterion(output,label)
+                    loss=self.criterion(output,label)
                     valid_epoch_loss+=loss.item()*images.shape[0]
                     valid_count+=images.shape[0]
                     correct = np.where(np.argmax(output.cpu().detach().numpy(), axis=1)==label.cpu().detach().numpy())[0].shape[0]
@@ -126,7 +128,7 @@ class CXR_Model(object):
         device=self.device
         for batch in self.test_loader:
             self.model.eval()
-            optimizer.zero_grad()
+            self.optimizer.zero_grad()
             with torch.no_grad():
             
                 names,images,label=batch
@@ -134,7 +136,7 @@ class CXR_Model(object):
                 images=images.to(device)
                 label=label.to(device)
                 output=self.model(images)
-                loss=criterion(output,label)
+                loss=self.criterion(output,label)
                 test_epoch_loss+=loss.item()*images.shape[0]
                 test_count+=images.shape[0]
                 correct = np.where(np.argmax(output.cpu().detach().numpy(), axis=1)==label.cpu().detach().numpy())[0].shape[0]
