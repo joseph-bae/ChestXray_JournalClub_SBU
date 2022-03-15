@@ -5,9 +5,7 @@ import pandas as pd
 from torch.utils.data import DataLoader
 import torch
 import random
-random.seed(0)
-torch.manual_seed(0)
-np.random.seed(0)
+
 
 class color:
    PURPLE = '\033[95m'
@@ -52,6 +50,9 @@ class CXR_DataLoader(object):
   def __len__(self):
     return len(self.data_list)
 def MakeDataLoader(data_path,label_sheet_path=None,batch_size=128,dataloadertype='train_valid'):
+  random.seed(0)
+  torch.manual_seed(0)
+  np.random.seed(0)
   intermediateLoader=CXR_DataLoader(data_path,label_sheet_path,dataloadertype=dataloadertype)
   if dataloadertype=='train_valid':
     shuffle=True

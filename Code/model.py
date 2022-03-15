@@ -8,12 +8,12 @@ from torch import optim
 import utils
 import torch
 import random
-random.seed(0)
-torch.manual_seed(0)
-np.random.seed(0)
+
 
 class CXR_Model(object):
-
+    random.seed(0)
+    torch.manual_seed(0)
+    np.random.seed(0)
     def __init__(self,model_type='small', learning_rate=.01, dropout=.3,train_loader=None,
         valid_loader=None,test_loader=None):
         self.model_type=model_type
