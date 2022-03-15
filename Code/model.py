@@ -99,7 +99,7 @@ class CXR_Model(object):
             self.latest_images=images
             valid_accuracy=valid_epoch_correct/valid_count
             valid_total_loss=valid_epoch_loss/valid_count
-            print("---------------VALID---------------\nvalid_loss:",valid_total_loss,utils.color.RED+"valid_accuracy:"+util.color.END,valid_accuracy,'\n')
+            print("---------------VALID---------------\nvalid_loss:",valid_total_loss,utils.color.RED+"valid_accuracy:"+utils.color.END,valid_accuracy,'\n')
     def test(self):
         test_count=0
         test_epoch_loss=0
