@@ -7,6 +7,9 @@ from torchvision import models
 from torch import optim
 import utils
 import torch
+torch.manual_seed(0)
+np.random.seed(0)
+
 class CXR_Model(object):
 
     def __init__(self,model_type='small', learning_rate=.01, dropout=.3,train_loader=None,
