@@ -14,7 +14,7 @@ class CXR_Model(object):
         self.epochs=epochs
         self.lr=learning_rate
         self.model_type=model_type
-        self.p=droupout
+        self.p=dropout
         self.device=torch.device("cuda:0")
         self.create_model()
         self.train_loader=train_loader
