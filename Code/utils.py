@@ -5,7 +5,7 @@ import pandas as pd
 from torch.utils.data import DataLoader
 import torch
 import random
-
+from cv2 import equalizeHist
 
 class color:
    PURPLE = '\033[95m'
@@ -43,9 +43,10 @@ class CXR_DataLoader(object):
     np.random.shuffle(self.data_list)
   def __getitem__(self,idx):
     images = np.zeros((3,240,240))
-    images[0,:,:]=self.data_list[idx][1]
-    images[1,:,:]=self.data_list[idx][1]
-    images[2,:,:]=self.data_list[idx][1]
+    current_image=equalizeHist(self.data_list[idx][1])
+    images[0,:,:]=current_image
+    images[1,:,:]=current_image
+    images[2,:,:]=current_image
     return self.data_list[idx][0],torch.from_numpy(images).type(torch.FloatTensor),int(self.data_list[idx][2]) #np.random.randint(0, 2)
   def __len__(self):
     return len(self.data_list)
@@ -53,6 +54,7 @@ def MakeDataLoader(data_path,label_sheet_path=None,batch_size=128,dataloadertype
   random.seed(0)
   torch.manual_seed(0)
   np.random.seed(0)
+  torch.cuda.empty_cache()
   intermediateLoader=CXR_DataLoader(data_path,label_sheet_path,dataloadertype=dataloadertype)
   if dataloadertype=='train_valid':
     shuffle=True
