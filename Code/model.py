@@ -56,6 +56,8 @@ class CXR_Model(object):
             train_count=0
             epoch_loss=0
             epoch_correct=0
+            epoch_correct0=0
+            epoch_correct1=0
             for batch in self.train_loader:
                 self.model.train()
                 optimizer.zero_grad()
@@ -69,17 +71,24 @@ class CXR_Model(object):
                 epoch_loss+=loss.item()*images.shape[0]
                 train_count+=images.shape[0]
                 correct = np.where(np.argmax(output.cpu().detach().numpy(), axis=1)==label.cpu().detach().numpy())[0].shape[0]
+                negatives = np.where(label.cpu().detach().numpy()==0)[0]
+                correct0 += np.where(np.argmax(output.cpu().detach().numpy()[negatives],axis=1)==0)[0].shape[0]
+                positives = np.where(label.cpu().detach().numpy()==0)[0]
+                correct1 += np.where(np.argmax(output.cpu().detach().numpy()[positives],axis=1)==1)[0].shape[0]
                 epoch_correct+=correct
+            sensitivity=correct1/(train_count/2)
+            specificity=correct0/(train_count/2)
             accuracy=epoch_correct/train_count
             total_loss=epoch_loss/train_count 
             print("epoch:",epoch+1)
-            print("---------------TRAIN---------------\ntrain_loss:",total_loss, utils.color.RED+"train_accuracy:"+utils.color.END,accuracy)
+            print("---------------TRAIN---------------\n","train_sensitvity",sensitivity,"train_specificity",specificity, utils.color.BOLD+"train_accuracy:",accuracy,utils.color.END,)
             
 
             valid_count=0
             valid_epoch_loss=0
             valid_epoch_correct=0
-            
+            valid_epoch_correct0=0
+            valid_epoch_correct1=0            
             for vbatch in self.valid_loader:
                 self.model.eval()
                 optimizer.zero_grad()
@@ -93,13 +102,19 @@ class CXR_Model(object):
                     valid_epoch_loss+=loss.item()*images.shape[0]
                     valid_count+=images.shape[0]
                     correct = np.where(np.argmax(output.cpu().detach().numpy(), axis=1)==label.cpu().detach().numpy())[0].shape[0]
+                    negatives = np.where(label.cpu().detach().numpy()==0)[0]
+                    correct0 += np.where(np.argmax(output.cpu().detach().numpy()[negatives],axis=1)==0)[0].shape[0]
+                    positives = np.where(label.cpu().detach().numpy()==0)[0]
+                    correct1 += np.where(np.argmax(output.cpu().detach().numpy()[positives],axis=1)==1)[0].shape[0]                    
                     valid_epoch_correct+=correct
             self.latest_labels=label
             self.latest_predictions=output
             self.latest_images=images
+            sensitivity=correct1/(valid_count/2)
+            specificity=correct1/(valid_count/2)
             valid_accuracy=valid_epoch_correct/valid_count
             valid_total_loss=valid_epoch_loss/valid_count
-            print("---------------VALID---------------\nvalid_loss:",valid_total_loss,utils.color.RED+"valid_accuracy:"+utils.color.END,valid_accuracy,'\n')
+            print("---------------VALID---------------\n","valid_sensitvity",sensitivity,"valid_specificity",specificity,utils.color.BOLD+"valid_accuracy:",valid_accuracy,utils.color.END,'\n')
     def test(self):
         test_count=0
         test_epoch_loss=0
