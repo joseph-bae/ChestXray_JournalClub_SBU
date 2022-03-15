@@ -9,11 +9,8 @@ import utils
 import torch
 class CXR_Model(object):
 
-    def __init__(self,model_type='small',batch_size=256,
-        epochs=20,learning_rate=.01,dropout=.3,train_loader=None,valid_loader=None,test_loader=None):
-        self.batch_size=batch_size
-        self.epochs=epochs
-        self.lr=learning_rate
+    def __init__(self,model_type='small',dropout=.3 ,train_loader=None,
+        valid_loader=None,test_loader=None):
         self.model_type=model_type
         self.p=dropout
         self.device=torch.device("cuda:0")
@@ -49,11 +46,13 @@ class CXR_Model(object):
                     )
         self.model=model
         return
-    def train(self):
+    def train(self,epochs=20,learning_rate=.01):
+
+        device=self.device
         model=self.model.to(device)
         criterion = torch.nn.CrossEntropyLoss().to(device)
-        optimizer = optim.SGD(model.parameters(),lr=self.lr)
-        for epoch in range(self.epochs):
+        optimizer = optim.SGD(model.parameters(),lr=learning_rate)
+        for epoch in range(epochs):
             train_count=0
             epoch_loss=0
             epoch_correct=0
@@ -105,6 +104,7 @@ class CXR_Model(object):
         test_count=0
         test_epoch_loss=0
         test_epoch_correct=0
+        device=self.device
         for batch in self.test_loader:
             model.eval()
             optimizer.zero_grad()
