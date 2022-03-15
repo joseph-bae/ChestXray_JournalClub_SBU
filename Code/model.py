@@ -6,6 +6,7 @@ from torch.utils.data import DataLoader
 from torchvision import models
 from torch import optim
 import utils
+import torch
 class CXR_Model(object):
 
     def __init__(self,model_type='small',batch_size=256,
