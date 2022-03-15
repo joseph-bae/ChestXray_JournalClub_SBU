@@ -51,7 +51,7 @@ class CXR_Model(object):
         device=self.device
         self.model.to(device)
         criterion = torch.nn.CrossEntropyLoss().to(device)
-        optimizer = optim.SGD(model.parameters(),lr=learning_rate)
+        optimizer = optim.SGD(self.model.parameters(),lr=learning_rate)
         for epoch in range(epochs):
             train_count=0
             epoch_loss=0
