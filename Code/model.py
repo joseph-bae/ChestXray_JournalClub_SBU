@@ -16,7 +16,7 @@ class CXR_Model(object):
         self.lr=learning_rate
         self.device=torch.device("cuda:0")
         self.create_model()
-        self.criterion = torch.nn.CrossEntropyLoss().to(device)
+        self.criterion = torch.nn.CrossEntropyLoss().to(self.device)
         self.optimizer = optim.SGD(self.model.parameters(),lr=self.lr)
         self.train_loader=train_loader
         self.valid_loader=valid_loader
