@@ -53,7 +53,7 @@ class CXR_DataLoader(object):
     tensor_images=torch.from_numpy(images).type(torch.FloatTensor)
     CC=transforms.CenterCrop(200)
     tensor_images=CC(tensor_images)
-    resize = transforms.Resize(size=self.image_size)
+    resize = transforms.Resize(size=(240,240))
     tensor_images=resize(tensor_images)
     return self.data_list[idx][0],torch.from_numpy(images).type(torch.FloatTensor),int(self.data_list[idx][2]) #np.random.randint(0, 2)
   def __len__(self):
