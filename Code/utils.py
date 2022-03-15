@@ -33,7 +33,11 @@ class CXR_DataLoader(object):
     return self.data_list[idx][0],torch.from_numpy(images).type(torch.FloatTensor),int(self.data_list[idx][2]) #np.random.randint(0, 2)
   def __len__(self):
     return len(self.data_list)
-def MakeDataLoader(data_path,label_sheet_path,batch_size=128,shuffle=True,dataloadertype='train_valid'):
+def MakeDataLoader(data_path,label_sheet_path,batch_size=128,dataloadertype='train_valid'):
   intermediateLoader=CXRDataLoader(data_path,label_sheet_path,dataloadertype=dataloadertype)
+  if dataloadertype='train_valid':
+    shuffle=True
+  else:
+    shuffle=False
   return DataLoader(intermediateLoader,batch_size=batch_size,shuffle=shuffle)
 
