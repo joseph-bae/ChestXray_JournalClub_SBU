@@ -72,6 +72,7 @@ def MakeDataLoader(data_path,label_sheet_path=None,batch_size=128,dataloadertype
     shuffle=False
   return DataLoader(intermediateLoader,batch_size=batch_size,shuffle=shuffle)
 def ShowImages(images):
+  Key=pd.read_csv("/content/Temp_JC/ChestXray_JournalClub_SBU/Key.csv")
   Random_Image_Names=np.random.choice(images,10,replace=False) #choose 10 random images from this training set
   plt.figure(figsize=(20,10)) #open a figure for viewing
   for i,Image_Name in enumerate(Random_Image_Names):  #loop through our chosen random images
