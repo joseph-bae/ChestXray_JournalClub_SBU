@@ -141,20 +141,20 @@ class CXR_Model(object):
             # print(("---------------VALID---------------\n"+"valid_loss: %.8f \n"+"valid_sensitvity: %.4f, valid_specificity: %.4f, "+utils.color.RED+utils.color.BOLD+"valid_accuracy: %.4f"+utils.color.END+'\n') %(valid_total_loss,valid_sensitivity,valid_specificity,valid_accuracy))
             fig.suptitle("Epoch "+str(epoch+1),fontsize=20)
             
-            axs[0].plot([x+1 for x in range(epoch)],total_loss,'bo',linestyle='dashed',label='train')
-            axs[0].plot([x+1 for x in range(epoch)],valid_total_loss,'r+',linestyle='solid',label='valid')
+            axs[0].plot([x+1 for x in range(epoch+1)],total_loss,'bo',linestyle='dashed',label='train')
+            axs[0].plot([x+1 for x in range(epoch+1)],valid_total_loss,'r+',linestyle='solid',label='valid')
             axs[0].set(xlabel="Epochs",ylabel="Loss",title="Loss")
 
-            axs[1].plot([x+1 for x in range(epoch)],sensitivity,'bo',linestyle='dashed',label='train')
-            axs[1].plot([x+1 for x in range(epoch)],valid_sensitivity,'r+',linestyle='solid',label='valid')
+            axs[1].plot([x+1 for x in range(epoch+1)],sensitivity,'bo',linestyle='dashed',label='train')
+            axs[1].plot([x+1 for x in range(epoch+1)],valid_sensitivity,'r+',linestyle='solid',label='valid')
             axs[1].set(xlabel="Epochs",ylabel="Sensitivity",title="Sensitivity")
             
-            axs[2].plot([x+1 for x in range(epoch)],specificity,'bo',linestyle='dashed',label='train')
-            axs[2].plot([x+1 for x in range(epoch)],valid_specificity,'r+',linestyle='solid',label='valid')
+            axs[2].plot([x+1 for x in range(epoch+1)],specificity,'bo',linestyle='dashed',label='train')
+            axs[2].plot([x+1 for x in range(epoch+1)],valid_specificity,'r+',linestyle='solid',label='valid')
             axs[2].set(xlabel="Epochs",ylabel="Specificity",title="Specificity")
 
-            axs[3].plot([x+1 for x in range(epoch)],accuracy,'bo',linestyle='dashed',label='train')
-            axs[3].plot([x+1 for x in range(epoch)],valid_accuracy,'r+',linestyle='solid',label='valid')
+            axs[3].plot([x+1 for x in range(epoch+1)],accuracy,'bo',linestyle='dashed',label='train')
+            axs[3].plot([x+1 for x in range(epoch+1)],valid_accuracy,'r+',linestyle='solid',label='valid')
             axs[3].set(xlabel="Epochs",ylabel="Accuracy",title="Accuracy")            
 
             if epoch == 0:
