@@ -68,6 +68,12 @@ class CXR_Model(object):
         self.model.to(device)
         loss_list_validation=[]
         loss_list_train=[]
+        train_sens_list=[]
+        valid_sens_list=[]
+        train_spec_list=[]
+        valid_spec_list=[]
+        train_acc_list=[]
+        valid_acc_list=[]
         for epoch in range(epochs):
             train_count=0
             epoch_loss=0
@@ -95,8 +101,11 @@ class CXR_Model(object):
                 epoch_correct1+=correct1
                 epoch_correct+=correct
             sensitivity=epoch_correct1/(train_count/2)
+            train_sens_list.append(sensitivity)
             specificity=epoch_correct0/(train_count/2)
+            train_spec_list.append(specificity)
             accuracy=epoch_correct/train_count
+            train_acc_list.append(accuracy)
             total_loss=epoch_loss/train_count 
             loss_list_train.append(total_loss)
             print("epoch:",epoch+1)
@@ -141,22 +150,24 @@ class CXR_Model(object):
             # print(("---------------VALID---------------\n"+"valid_loss: %.8f \n"+"valid_sensitvity: %.4f, valid_specificity: %.4f, "+utils.color.RED+utils.color.BOLD+"valid_accuracy: %.4f"+utils.color.END+'\n') %(valid_total_loss,valid_sensitivity,valid_specificity,valid_accuracy))
             fig.suptitle("Epoch "+str(epoch+1),fontsize=20)
             
-            axs[0].plot([x+1 for x in range(epoch+1)],total_loss,'bo',linestyle='dashed',label='train')
-            axs[0].plot([x+1 for x in range(epoch+1)],valid_total_loss,'r+',linestyle='solid',label='valid')
+            axs[0].plot([x+1 for x in range(epoch+1)],loss_list_train,'bo',linestyle='dashed',label='train')
+            axs[0].plot([x+1 for x in range(epoch+1)],loss_list_validation,'r+',linestyle='solid',label='valid')
             axs[0].set(xlabel="Epochs",ylabel="Loss",title="Loss")
 
-            axs[1].plot([x+1 for x in range(epoch+1)],sensitivity,'bo',linestyle='dashed',label='train')
-            axs[1].plot([x+1 for x in range(epoch+1)],valid_sensitivity,'r+',linestyle='solid',label='valid')
+            axs[1].plot([x+1 for x in range(epoch+1)],train_sens_list,'bo',linestyle='dashed',label='train')
+            axs[1].plot([x+1 for x in range(epoch+1)],valid_sens_list,'r+',linestyle='solid',label='valid')
             axs[1].set(xlabel="Epochs",ylabel="Sensitivity",title="Sensitivity")
+            axs[1].set_ylim([0,1])
             
-            axs[2].plot([x+1 for x in range(epoch+1)],specificity,'bo',linestyle='dashed',label='train')
-            axs[2].plot([x+1 for x in range(epoch+1)],valid_specificity,'r+',linestyle='solid',label='valid')
+            axs[2].plot([x+1 for x in range(epoch+1)],train_spec_list,'bo',linestyle='dashed',label='train')
+            axs[2].plot([x+1 for x in range(epoch+1)],valid_spec_list,'r+',linestyle='solid',label='valid')
             axs[2].set(xlabel="Epochs",ylabel="Specificity",title="Specificity")
-
-            axs[3].plot([x+1 for x in range(epoch+1)],accuracy,'bo',linestyle='dashed',label='train')
-            axs[3].plot([x+1 for x in range(epoch+1)],valid_accuracy,'r+',linestyle='solid',label='valid')
+            axs[2].set_ylim([0,1])
+            
+            axs[3].plot([x+1 for x in range(epoch+1)],train_acc_list,'bo',linestyle='dashed',label='train')
+            axs[3].plot([x+1 for x in range(epoch+1)],valid_acc_list,'r+',linestyle='solid',label='valid')
             axs[3].set(xlabel="Epochs",ylabel="Accuracy",title="Accuracy")            
-
+            axs[3].set_ylim([0,1])
             if epoch == 0:
                 handles, labels = axs[1].get_legend_handles_labels()
                 fig.legend(handles, labels, loc='upper right') 
