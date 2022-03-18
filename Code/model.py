@@ -8,8 +8,10 @@ from torch import optim
 import utils
 import torch
 import random
-import matplotlib.pyplot as plt #Library for image and figure visualization
-
+import matplotlib.pyplot as plt 
+from IPython.display import clear_output
+from google.colab.patches import cv2_imshow
+from cv2 import imread
 torch.cuda.manual_seed(0)
 torch.backends.cudnn.benchmark=False
 torch.backends.cudnn.deterministic=True
@@ -61,7 +63,7 @@ class CXR_Model(object):
         self.model=model
         return
     def train(self,epochs=10):
-
+        fig, axs = plt.subplots(1, 4, figsize=(20,5))
         device=self.device
         self.model.to(device)
         loss_list_validation=[]
@@ -137,11 +139,35 @@ class CXR_Model(object):
             loss_list_validation.append(valid_total_loss)
             self.validation_list=loss_list_validation
             # print(("---------------VALID---------------\n"+"valid_loss: %.8f \n"+"valid_sensitvity: %.4f, valid_specificity: %.4f, "+utils.color.RED+utils.color.BOLD+"valid_accuracy: %.4f"+utils.color.END+'\n') %(valid_total_loss,valid_sensitivity,valid_specificity,valid_accuracy))
-            plt.plot(range(len(AI_model.validation_list)),AI_model.validation_list)
-            plt.xlabel('epochs')
-            plt.ylabel('loss')
-            plt.title('Validation Loss')
-            plt.show()
+            fig.suptitle("Epoch "+str(epoch+1),fontsize=20)
+            
+            axs[0].plot([x+1 for x in range(epoch)],total_loss,'bo',linestyle='dashed',label='train')
+            axs[0].plot([x+1 for x in range(epoch)],valid_total_loss,'r+',linestyle='solid',label='valid')
+            axs[0].set(xlabel="Epochs",ylabel="Loss",title="Loss")
+
+            axs[1].plot([x+1 for x in range(epoch)],sensitivity,'bo',linestyle='dashed',label='train')
+            axs[1].plot([x+1 for x in range(epoch)],valid_sensitivity,'r+',linestyle='solid',label='valid')
+            axs[1].set(xlabel="Epochs",ylabel="Sensitivity",title="Sensitivity")
+            
+            axs[2].plot([x+1 for x in range(epoch)],specificity,'bo',linestyle='dashed',label='train')
+            axs[2].plot([x+1 for x in range(epoch)],valid_specificity,'r+',linestyle='solid',label='valid')
+            axs[2].set(xlabel="Epochs",ylabel="Specificity",title="Specificity")
+
+            axs[3].plot([x+1 for x in range(epoch)],accuracy,'bo',linestyle='dashed',label='train')
+            axs[3].plot([x+1 for x in range(epoch)],valid_accuracy,'r+',linestyle='solid',label='valid')
+            axs[3].set(xlabel="Epochs",ylabel="Accuracy",title="Accuracy")            
+
+            if epoch == 0:
+                handles, labels = axs[1].get_legend_handles_labels()
+                fig.legend(handles, labels, loc='upper right') 
+            ### The following is a painful fix, but seems necessary for Google Colab for demo purposes
+
+            fig.savefig("temp.png")
+            img=imread("temp.png")
+            clear_output()
+            cv2_imshow(img)
+        clear_output()
+
     def test(self):
         test_count=0
         test_epoch_loss=0
