@@ -108,7 +108,6 @@ class CXR_Model(object):
             train_acc_list.append(accuracy)
             total_loss=epoch_loss/train_count 
             loss_list_train.append(total_loss)
-            print("epoch:",epoch+1)
             # print(("---------------TRAIN---------------\n"+"train_sensitvity: %.4f, train_specificity: %.4f, " + utils.color.RED+utils.color.BOLD+"train_accuracy: %.4f"+utils.color.END) %(sensitivity,specificity,accuracy))
             
 
@@ -142,8 +141,13 @@ class CXR_Model(object):
             self.latest_images=images
             self.latest_names=names
             valid_sensitivity=valid_epoch_correct1/(valid_count/2)
+            valid_sens_list.append(valid_sensitivity)
+
+            
             valid_specificity=valid_epoch_correct0/(valid_count/2)
+            valid_spec_list.append(valid_specificity)
             valid_accuracy=valid_epoch_correct/valid_count
+            valid_acc_list.append(valid_accuracy)
             valid_total_loss=valid_epoch_loss/valid_count
             loss_list_validation.append(valid_total_loss)
             self.validation_list=loss_list_validation
