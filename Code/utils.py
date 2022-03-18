@@ -6,6 +6,8 @@ from torch.utils.data import DataLoader
 import torch
 import random
 from cv2 import equalizeHist
+import matplotlib.pyplot as plt #Library for image and figure visualization
+
 import torchvision.transforms as transforms
 torch.cuda.manual_seed(0)
 torch.backends.cudnn.benchmark=False

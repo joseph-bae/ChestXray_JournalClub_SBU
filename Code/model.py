@@ -8,6 +8,8 @@ from torch import optim
 import utils
 import torch
 import random
+import matplotlib.pyplot as plt #Library for image and figure visualization
+
 torch.cuda.manual_seed(0)
 torch.backends.cudnn.benchmark=False
 torch.backends.cudnn.deterministic=True
@@ -63,6 +65,7 @@ class CXR_Model(object):
         device=self.device
         self.model.to(device)
         loss_list_validation=[]
+        loss_list_train=[]
         for epoch in range(epochs):
             train_count=0
             epoch_loss=0
@@ -93,8 +96,9 @@ class CXR_Model(object):
             specificity=epoch_correct0/(train_count/2)
             accuracy=epoch_correct/train_count
             total_loss=epoch_loss/train_count 
+            loss_list_train.append(total_loss)
             print("epoch:",epoch+1)
-            print(("---------------TRAIN---------------\n"+"train_sensitvity: %.4f, train_specificity: %.4f, " + utils.color.RED+utils.color.BOLD+"train_accuracy: %.4f"+utils.color.END) %(sensitivity,specificity,accuracy))
+            # print(("---------------TRAIN---------------\n"+"train_sensitvity: %.4f, train_specificity: %.4f, " + utils.color.RED+utils.color.BOLD+"train_accuracy: %.4f"+utils.color.END) %(sensitivity,specificity,accuracy))
             
 
             valid_count=0
@@ -132,7 +136,12 @@ class CXR_Model(object):
             valid_total_loss=valid_epoch_loss/valid_count
             loss_list_validation.append(valid_total_loss)
             self.validation_list=loss_list_validation
-            print(("---------------VALID---------------\n"+"valid_loss: %.8f \n"+"valid_sensitvity: %.4f, valid_specificity: %.4f, "+utils.color.RED+utils.color.BOLD+"valid_accuracy: %.4f"+utils.color.END+'\n') %(valid_total_loss,valid_sensitivity,valid_specificity,valid_accuracy))
+            # print(("---------------VALID---------------\n"+"valid_loss: %.8f \n"+"valid_sensitvity: %.4f, valid_specificity: %.4f, "+utils.color.RED+utils.color.BOLD+"valid_accuracy: %.4f"+utils.color.END+'\n') %(valid_total_loss,valid_sensitivity,valid_specificity,valid_accuracy))
+            plt.plot(range(len(AI_model.validation_list)),AI_model.validation_list)
+            plt.xlabel('epochs')
+            plt.ylabel('loss')
+            plt.title('Validation Loss')
+            plt.show()
     def test(self):
         test_count=0
         test_epoch_loss=0
