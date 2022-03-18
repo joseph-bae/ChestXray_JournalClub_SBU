@@ -75,7 +75,7 @@ def ShowImages(images):
   Random_Image_Names=np.random.choice(images,10,replace=False) #choose 10 random images from this training set
   plt.figure(figsize=(20,10)) #open a figure for viewing
   for i,Image_Name in enumerate(Random_Image_Names):  #loop through our chosen random images
-    CurrentImage=PIL.Image.open(os.path.join("TrainingCXRs",Image_Name)) #read in a single image
+    CurrentImage=PIL.Image.open(os.path.join("/content/Temp_JC/ChestXray_JournalClub_SBU/TrainingCXRs",Image_Name)) #read in a single image
     CurrentLabel=Key.loc[Key['FileName']==Image_Name,'Pathology'] #figure out it's label
     ax=plt.subplot(2,5,i+1) #boring figure stuff
     if CurrentLabel.values[0]:
