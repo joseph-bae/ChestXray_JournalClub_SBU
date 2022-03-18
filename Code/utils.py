@@ -69,7 +69,7 @@ def MakeDataLoader(data_path,label_sheet_path=None,batch_size=128,dataloadertype
   else:
     shuffle=False
   return DataLoader(intermediateLoader,batch_size=batch_size,shuffle=shuffle)
-def ShowImages(images)
+def ShowImages(images):
   Random_Image_Names=np.random.choice(images,10,replace=False) #choose 10 random images from this training set
   plt.figure(figsize=(20,10)) #open a figure for viewing
   for i,Image_Name in enumerate(Random_Image_Names):  #loop through our chosen random images
