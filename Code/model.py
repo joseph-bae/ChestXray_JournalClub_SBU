@@ -151,7 +151,7 @@ class CXR_Model(object):
             valid_total_loss=valid_epoch_loss/valid_count
             loss_list_validation.append(valid_total_loss)
             self.validation_list=loss_list_validation
-            # print(("---------------VALID---------------\n"+"valid_loss: %.8f \n"+"valid_sensitvity: %.4f, valid_specificity: %.4f, "+utils.color.RED+utils.color.BOLD+"valid_accuracy: %.4f"+utils.color.END+'\n') %(valid_total_loss,valid_sensitivity,valid_specificity,valid_accuracy))
+            
             fig.suptitle("Epoch "+str(epoch+1),fontsize=20)
             
             axs[0].plot([x+1 for x in range(epoch+1)],loss_list_train,'bo',linestyle='dashed',label='train')
@@ -182,7 +182,7 @@ class CXR_Model(object):
             clear_output()
             cv2_imshow(img)
         clear_output()
-
+        print("valid_loss: %.8f \n"+"valid_sensitvity: %.4f, valid_specificity: %.4f, "+utils.color.RED+utils.color.BOLD+"valid_accuracy: %.4f"+utils.color.END+'\n') %(valid_total_loss,valid_sensitivity,valid_specificity,valid_accuracy))
     def test(self):
         test_count=0
         test_epoch_loss=0
