@@ -2,7 +2,7 @@
 
 A repository containing materials for the SBU MSTP journal club. 
 
-
+Related reading: Rajpurkar, P., Irvin, J., Zhu, K., Yang, B., Mehta, H., Duan, T., ... & Ng, A. Y. (2017). Chexnet: Radiologist-level pneumonia detection on chest x-rays with deep learning. arXiv preprint arXiv:1711.05225. https://arxiv.org/pdf/1711.05225
 
 
 CXR data is taken from:
