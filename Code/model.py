@@ -182,7 +182,9 @@ class CXR_Model(object):
             clear_output()
             cv2_imshow(img)
         clear_output()
+        print(("train_loss: %.8f \n"+"train_sensitvity: %.4f, train_specificity: %.4f, "+utils.color.BOLD+"train_accuracy: %.4f"+utils.color.END+'\n') %(total_loss,sensitivity,specificity,accuracy))
         print(("valid_loss: %.8f \n"+"valid_sensitvity: %.4f, valid_specificity: %.4f, "+utils.color.RED+utils.color.BOLD+"valid_accuracy: %.4f"+utils.color.END+'\n') %(valid_total_loss,valid_sensitivity,valid_specificity,valid_accuracy))
+
     def test(self):
         test_count=0
         test_epoch_loss=0
