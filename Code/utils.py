@@ -7,7 +7,38 @@ import torch
 import random
 from cv2 import equalizeHist
 import matplotlib.pyplot as plt #Library for image and figure visualization
+from collections import defaultdict
 
+def ShowImages_Interactive(images,num_NoFinding=5,num_Pneum=5):
+  Key=pd.read_csv("/content/Temp_JC/ChestXray_JournalClub_SBU/Key.csv")
+  TotalIms=np.ceil(num_NoFinding+num_Pneum)
+  Outcome_d=defaultdict(list)
+  for png in images:
+    Outcome=Key.loc[Key['FileName']==png,'Pathology'].values[0]
+    if Outcome:
+      Outcome_d['Consolidation/Pneumonia'].append(png)
+    else:
+      Outcome_d['No Finding'].append(png)
+  
+  Chosen_Pneum=np.random.choice(Outcome_d['Consolidation/Pneumonia'],
+      num_Pneum,replace=False)
+  Chosen_Norm=np.random.choice(Outcome_d['No Finding'],
+      num_NoFinding,replace=False) 
+  TotalChosenImages=np.concatenate((Chosen_Pneum,Chosen_Norm))
+  plt.figure(figsize=(100,100)) #open a figure for viewing
+  for i,Image_Name in enumerate(TotalChosenImages):  #loop through our chosen random images
+    CurrentImage=PIL.Image.open(os.path.join("/content/Temp_JC/ChestXray_JournalClub_SBU/TrainingCXRs",Image_Name)) #read in a single image
+    CurrentLabel=Key.loc[Key['FileName']==Image_Name,'Pathology'] #figure out it's label
+    ax=plt.subplot(4,np.ceil(TotalIms/4),i+1) #boring figure stuff
+    if CurrentLabel.values[0]:
+      ax.set_title("Consolidation/Pneumonia",fontsize=72)
+
+    else:
+      ax.set_title("No Finding",fontsize=72)
+    # ax.text(120,220,CurrentLabel.values[0],color='white',backgroundcolor='black',
+    # horizontalalignment='center')
+    ax.axis('off')
+    plt.imshow(CurrentImage,cmap='gray')
 import torchvision.transforms as transforms
 torch.cuda.manual_seed(0)
 torch.backends.cudnn.benchmark=False
